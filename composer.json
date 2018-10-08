@@ -1,5 +1,5 @@
 {
-  "name": "YagO-o/simple-dto",
+  "name": "yago-o/simple-dto",
   "description": "Simple class for build php dto objects via PHPDoc annotations.",
   "authors": [
     {
