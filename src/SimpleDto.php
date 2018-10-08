@@ -53,7 +53,8 @@ class SimpleDto
             $defaultValue = $defaultPropertyValues[$property->getName()];
             $paramValue = $isIsset ? $params[$property->getName()] : $defaultValue;
 
-            $propertyType = reset(array_diff($typeList, [self::NULLABLE_ATTRIBUTE]));
+            $typeWithoutNull = array_diff($typeList, [self::NULLABLE_ATTRIBUTE]);
+            $propertyType = reset($typeWithoutNull);
             $isTypeArray = mb_substr($propertyType, -2) === self::ARRAY_ATTRIBUTE;
             if ($isTypeArray) {
                 $propertyType = rtrim($propertyType, self::ARRAY_ATTRIBUTE);
