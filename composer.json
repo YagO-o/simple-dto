@@ -1,0 +1,23 @@
+{
+  "name": "YagO-o/simple-dto",
+  "description": "Simple class for build php dto objects via PHPDoc annotations.",
+  "authors": [
+    {
+      "name": "Egor Kislyakov",
+      "email": "yago78@yandex.ru"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "^7.1"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.3.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "SimpleDto\\": "src/"
+    }
+  }
+}
