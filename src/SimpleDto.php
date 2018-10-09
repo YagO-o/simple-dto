@@ -29,6 +29,7 @@ class SimpleDto
      *
      * @throws AnnotationException
      * @throws ValidationException
+     * @throws \ReflectionException
      */
     public function __construct(array $params = [])
     {
@@ -63,7 +64,8 @@ class SimpleDto
             $isValid = $this->validate($propertyType, $propertyName, $isNullable, $isTypeArray, $paramValue);
 
             if ($isValid) {
-                $this->$propertyName = $paramValue;
+                $property->setAccessible(true);
+                $property->setValue($this, $paramValue);
             } else {
                 throw ValidationException::createWithValidationError($propertyName, $propertyType, $isTypeArray,
                     $isNullable);
