@@ -8,17 +8,18 @@ use SimpleDto\SimpleDto;
  */
 class SimpleDtoTest extends TestCase
 {
-    public function testSuccessCanAssignDefaultValues()
+    public function testSuccessCanAssignDefaultValues(): void
     {
-        $dto = new class([]) extends SimpleDto{
+        $dto = new class([]) extends SimpleDto
+        {
             /** @var int */
-            protected $integer = 5;
+            private $integer = 5;
             /** @var int[] */
-            protected $integerArray = [1,2,3,4,5];
+            private $integerArray = [1, 2, 3, 4, 5];
             /** @var int|null */
-            protected $integerNull = null;
+            private $integerNull;
             /** @var int[]|null */
-            protected $integerNullArray = null;
+            private $integerNullArray;
 
             /**
              * @return int
@@ -54,12 +55,12 @@ class SimpleDtoTest extends TestCase
         };
 
         self::assertSame(5, $dto->getInteger());
-        self::assertSame([1,2,3,4,5], $dto->getIntegerArray());
-        self::assertSame(null, $dto->getIntegerNull());
-        self::assertSame(null, $dto->getIntegerNullArray());
+        self::assertSame([1, 2, 3, 4, 5], $dto->getIntegerArray());
+        self::assertNull($dto->getIntegerNull());
+        self::assertNull($dto->getIntegerNullArray());
     }
 
-    public function testSuccessCanAssignInteger()
+    public function testSuccessCanAssignInteger(): void
     {
         $intValue = 1;
         $longIntValue = 5;
@@ -82,19 +83,19 @@ class SimpleDtoTest extends TestCase
         ) extends SimpleDto
         {
             /** @var int */
-            protected $int;
+            private $int;
 
             /** @var integer */
-            protected $longInt;
+            private $longInt;
 
             /** @var int[] */
-            protected $intArray;
+            private $intArray;
 
             /** @var int|null */
-            protected $nullableInt;
+            private $nullableInt;
 
             /** @var int[]|null */
-            protected $nullableIntArray;
+            private $nullableIntArray;
 
             public function getInt(): int
             {
@@ -129,7 +130,7 @@ class SimpleDtoTest extends TestCase
         self::assertSame($nullableIntArray, $dto->getNullableIntArray());
     }
 
-    public function testSuccessCanAssignFloat()
+    public function testSuccessCanAssignFloat(): void
     {
         $floatValue = 1.1;
 
@@ -152,16 +153,16 @@ class SimpleDtoTest extends TestCase
         {
 
             /** @var float */
-            protected $float;
+            private $float;
 
             /** @var float[] */
-            protected $floatArray;
+            private $floatArray;
 
             /** @var float|null */
-            protected $nullableFloat;
+            private $nullableFloat;
 
             /** @var int[]|null */
-            protected $nullableFloatArray;
+            private $nullableFloatArray;
 
             public function getFloat(): float
             {
@@ -190,7 +191,7 @@ class SimpleDtoTest extends TestCase
         self::assertSame($nullableFloatArrayValue, $dto->getNullableFloatArray());
     }
 
-    public function testSuccessCanAssignBool()
+    public function testSuccessCanAssignBool(): void
     {
         $boolValue = true;
         $longBoolValue = false;
@@ -213,19 +214,19 @@ class SimpleDtoTest extends TestCase
         ) extends SimpleDto
         {
             /** @var bool */
-            protected $bool;
+            private $bool;
 
             /** @var boolean */
-            protected $longBool;
+            private $longBool;
 
             /** @var bool[] */
-            protected $boolArray;
+            private $boolArray;
 
             /** @var bool|null */
-            protected $nullableBool;
+            private $nullableBool;
 
             /** @var bool[]|null */
-            protected $nullableBoolArray;
+            private $nullableBoolArray;
 
             public function getbool(): bool
             {
@@ -261,7 +262,7 @@ class SimpleDtoTest extends TestCase
 
     }
 
-    public function testSuccessCanAssignString()
+    public function testSuccessCanAssignString(): void
     {
         $stringValue = 'string';
         $arrayStringValue = ['its', 'a', 'string', 'array'];
@@ -283,16 +284,16 @@ class SimpleDtoTest extends TestCase
         {
 
             /** @var string */
-            protected $string;
+            private $string;
 
             /** @var string[] */
-            protected $stringArray;
+            private $stringArray;
 
             /** @var string|null */
-            protected $nullableString;
+            private $nullableString;
 
             /** @var int[]|null */
-            protected $nullableStringArray;
+            private $nullableStringArray;
 
             public function getString(): string
             {
@@ -321,7 +322,7 @@ class SimpleDtoTest extends TestCase
         self::assertSame($nullableStringArrayValue, $dto->getNullableStringArray());
     }
 
-    public function testSuccessCanAssignArray()
+    public function testSuccessCanAssignArray(): void
     {
         $arrayValue = [1, 'two', false, 3.14];
         $arrayOfArrayValue = [
@@ -368,16 +369,16 @@ class SimpleDtoTest extends TestCase
         {
 
             /** @var array */
-            protected $testArray;
+            private $testArray;
 
             /** @var array[] */
-            protected $testArrayOfArray;
+            private $testArrayOfArray;
 
             /** @var array|null */
-            protected $nullableArray;
+            private $nullableArray;
 
             /** @var array[]|null */
-            protected $nullableArrayOfArray;
+            private $nullableArrayOfArray;
 
             public function getTestArray(): array
             {
@@ -406,7 +407,7 @@ class SimpleDtoTest extends TestCase
         self::assertSame($nullableArrayOfArrayValue, $dto->getNullableArrayOfArray());
     }
 
-    public function testSuccessCanAssignTypeClass()
+    public function testSuccessCanAssignTypeClass(): void
     {
         $typeValue = new TestType();
         $typeArrayValue = [
@@ -425,16 +426,16 @@ class SimpleDtoTest extends TestCase
             ]) extends SimpleDto
         {
             /** @var TestType */
-            protected $type;
+            private $type;
 
             /** @var TestType[] */
-            protected $typeArray;
+            private $typeArray;
 
             /** @var TestType|null */
-            protected $nullableType;
+            private $nullableType;
 
             /** @var TestType[]|null */
-            protected $nullableTypeArray;
+            private $nullableTypeArray;
 
             /**
              * @return TestType
@@ -476,344 +477,354 @@ class SimpleDtoTest extends TestCase
         self::assertSame($nullableTypeArrayValue, $dto->getNullableTypeArray());
     }
 
-    public function testFailInvalidIntPropertyParams()
+    public function testSuccessGetPropertyFromCache(): void
     {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['integer']);
+        require 'TestDtoClass.php';
+        $dto = new TestDtoClass([]);
+        $overrideIntDto = new TestDtoClass(['integer' => 10]);
+        $overrideStringDto = new TestDtoClass(['string' => 'str']);
 
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['int' => $invalidParam]) extends SimpleDto
-                {
-                    /** @var int */
-                    protected $int;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "int" must be type integer', $exception->getMessage());
-                continue;
-            }
-            self::fail('not integer array value '. var_export($invalidParam, true). ' was accepted');
-        }
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['integer' => $invalidParam]) extends SimpleDto
-                {
-                    /** @var integer */
-                    protected $integer;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "integer" must be type integer', $exception->getMessage());
-                continue;
-            }
-            self::fail('not integer value '. var_export($invalidParam, true). ' was accepted');
-        }
-
+        self::assertSame(TestDtoClass::DEFAULT_STRING_VALUE, $dto->getString());
+        self::assertSame(TestDtoClass::DEFAULT_INT_VALUE, $dto->getInteger());
+        self::assertSame($overrideIntDto->getInteger(), 10);
+        self::assertSame($overrideStringDto->getString(), 'str');
+        self::assertTrue(\SimpleDto\DtoPropertyStorage::hasProperties(TestDtoClass::class));
     }
 
-    public function testFailInvalidIntArrayPropertyParams()
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidIntPropertyParams($typeParam): void
     {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['array_integer']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['int' => $invalidParam]) extends SimpleDto {
-                    /** @var int[] */
-                    protected $int;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "int" must be type array of integer', $exception->getMessage());
-                continue;
-            }
-            self::fail('not integer array value '. var_export($invalidParam, true). ' was accepted');
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'integer') {
+            $this->addToAssertionCount(1);
+            return;
         }
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['integer' => $invalidParam]) extends SimpleDto {
-                    /** @var integer[] */
-                    protected $integer;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "integer" must be type array of integer', $exception->getMessage());
-                continue;
-            }
-            self::fail('not integer array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-
-    public function testFailInvalidBooleanPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['boolean']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['bool' => $invalidParam]) extends SimpleDto {
-                    /** @var bool */
-                    protected $bool;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "bool" must be type boolean', $exception->getMessage());
-                continue;
-            }
-            self::fail('not boolean value '. var_export($invalidParam, true). ' was accepted');
-        }
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['boolean' => $invalidParam]) extends SimpleDto {
-                    /** @var boolean */
-                    protected $boolean;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "boolean" must be type boolean', $exception->getMessage());
-                continue;
-            }
-            self::fail('not boolean  value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidBooleanArrayPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['array_boolean']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['boolean' => $invalidParam]) extends SimpleDto {
-                    /** @var boolean[] */
-                    protected $boolean;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "boolean" must be type array of boolean', $exception->getMessage());
-                continue;
-            }
-            self::fail('not boolean array value '. var_export($invalidParam, true). ' was accepted');
-        }
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class() extends SimpleDto {
-                    /** @var bool[] */
-                    protected $boolean;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "boolean" must be type array of boolean', $exception->getMessage());
-                continue;
-            }
-            self::fail('not boolean array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidFloatPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['float']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['float' => $invalidParam]) extends SimpleDto {
-                    /** @var float */
-                    protected $float;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "float" must be type float', $exception->getMessage());
-                continue;
-            }
-            self::fail('not float value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidFloatArrayPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['float_array']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['float_array' => $invalidParam]) extends SimpleDto {
-                    /** @var float[] */
-                    protected $float_array;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "float_array" must be type array of float', $exception->getMessage());
-                continue;
-            }
-            self::fail('not float array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidStringPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['string']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['string' => $invalidParam]) extends SimpleDto {
-                    /** @var string */
-                    protected $string;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "string" must be type string', $exception->getMessage());
-                continue;
-            }
-            self::fail('not string value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidStringArrayPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['array_string']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['array_string' => $invalidParam]) extends SimpleDto {
-                    /** @var string[] */
-                    protected $array_string;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "array_string" must be type array of string', $exception->getMessage());
-                continue;
-            }
-            self::fail('not string array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidArrayPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['array']);
-        unset($invalidParams['array_array']);
-        unset($invalidParams['array_null']);
-        unset($invalidParams['array_string']);
-        unset($invalidParams['array_float']);
-        unset($invalidParams['array_integer']);
-        unset($invalidParams['array_boolean']);
-        unset($invalidParams['array_type']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['array' => $invalidParam]) extends SimpleDto {
-                    /** @var array */
-                    protected $array;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "array" must be type array', $exception->getMessage());
-                continue;
-            }
-            self::fail('not array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidArrayArrayPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['array_array']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['array_array' => $invalidParam]) extends SimpleDto {
-                    /** @var array[] */
-                    protected $array_array;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "array_array" must be type array of array', $exception->getMessage());
-                continue;
-            }
-            self::fail('not array of array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidTypePropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['type']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['type' => $invalidParam]) extends SimpleDto {
-                    /** @var TestType */
-                    protected $type;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "type" must be type TestType', $exception->getMessage());
-                continue;
-            }
-            self::fail('not type class value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailInvalidTypeArrayPropertyParams()
-    {
-        $invalidParams = $this->getParamsSet();
-        unset($invalidParams['array_type']);
-
-        foreach ($invalidParams as $invalidParam) {
-            try {
-                new class(['array_type' => $invalidParam]) extends SimpleDto {
-                    /** @var TestType[] */
-                    protected $array_type;
-                };
-            } catch (\SimpleDto\ValidationException $exception) {
-                self::assertSame('Property "array_type" must be type array of TestType', $exception->getMessage());
-                continue;
-            }
-            self::fail('not type class array value '. var_export($invalidParam, true). ' was accepted');
-        }
-    }
-
-    public function testFailPropertyWithoutPhpDoc()
-    {
-        $this->expectException(\SimpleDto\AnnotationException::class);
-
-        new class([]) extends SimpleDto {
-            protected $t;
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['integer' => $paramValue]) extends SimpleDto
+        {
+            /** @var int */
+            private $integer;
         };
     }
 
-    public function testFailPropertyWithWrongAnnotation()
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidIntArrayPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'array_integer') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['array_integer' => $paramValue]) extends SimpleDto
+        {
+            /** @var int[] */
+            private $array_integer;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidBooleanPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'boolean') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['boolean' => $paramValue]) extends SimpleDto
+        {
+            /** @var bool */
+            private $boolean;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidBooleanArrayPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'array_boolean') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['array_boolean' => $paramValue]) extends SimpleDto
+        {
+            /** @var bool[] */
+            private $array_boolean;
+        };
+    }
+
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidFloatPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'float') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['float' => $paramValue]) extends SimpleDto
+        {
+            /** @var float */
+            private $float;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidFloatArrayPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'float_array') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['float_array' => $paramValue]) extends SimpleDto
+        {
+            /** @var float[] */
+            private $float_array;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidStringPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'string') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['string' => $paramValue]) extends SimpleDto
+        {
+            /** @var string */
+            private $string;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidStringArrayPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'array_string') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['array_string' => $paramValue]) extends SimpleDto
+        {
+            /** @var string[] */
+            private $array_string;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidArrayPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        $acceptedParams = [
+            'array',
+            'array_array',
+            'array_null',
+            'array_string',
+            'array_float',
+            'array_integer',
+            'array_boolean',
+            'array_type'
+        ];
+        if (\in_array($paramType, $acceptedParams, true)) {
+            $this->addToAssertionCount(1);
+            return;
+        }
+
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['array' => $paramValue]) extends SimpleDto
+        {
+            /** @var array */
+            private $array;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidArrayArrayPropertyParams($typeParam)
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'array_array') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['array_array' => $paramValue]) extends SimpleDto
+        {
+            /** @var array[] */
+            private $array_array;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidTypePropertyParams($typeParam)
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'type') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['type' => $paramValue]) extends SimpleDto
+        {
+            /** @var TestType */
+            private $type;
+        };
+    }
+
+    /**
+     * @dataProvider possibleTypeParamsDataProvider
+     * @param $typeParam
+     */
+    public function testFailInvalidTypeArrayPropertyParams($typeParam): void
+    {
+        $paramType = key($typeParam);
+        $paramValue = reset($typeParam);
+        if ($paramType === 'array_type') {
+            $this->addToAssertionCount(1);
+            return;
+        }
+
+        $this->expectException(\SimpleDto\ValidationException::class);
+        new class(['array_type' => $paramValue]) extends SimpleDto
+        {
+            /** @var TestType[] */
+            private $array_type;
+        };
+    }
+
+    public function testFailPropertyWithoutPhpDoc(): void
+    {
+        $this->expectException(\SimpleDto\AnnotationException::class);
+
+        new class([]) extends SimpleDto
+        {
+            private $t;
+        };
+    }
+
+    public function testFailPropertyWithWrongAnnotation(): void
     {
 
         $this->expectException(\SimpleDto\AnnotationException::class);
 
-        new class([]) extends SimpleDto {
+        new class([]) extends SimpleDto
+        {
             /** @var floatintdoublebool */
-            protected $t;
+            private $t;
         };
     }
 
-    public function testFailPropertyTypeClassNotExist()
+    public function testFailPropertyTypeClassNotExist(): void
     {
         $this->expectException(\SimpleDto\AnnotationException::class);
 
-        new class([]) extends SimpleDto {
+        new class([]) extends SimpleDto
+        {
             /** @var UnexistClassName[] */
-            protected $t;
+            private $t;
         };
     }
 
-    private function getParamsSet(): array
+    /**
+     * @return array
+     */
+    public function possibleTypeParamsDataProvider(): array
     {
         return [
-            'null' => null,
-            'string' => 'string',
-            'float' => 3.14,
-            'integer' => 5,
-            'boolean' => true,
-            'type' => new TestType(),
-            'array' => ['string', 3.14, 5, true, new TestType()],
-            'array_array' => ['array' => ['string', 3.14, 5, true, new TestType()]],
-            'array_null' => [null, null],
-            'array_string' => ['this', 'is', 'array', 'of', 'strings'],
-            'array_float' => [3.14, 2,71, 9.8],
-            'array_integer' => [1,2,3,4,5],
-            'array_boolean' => [true, false, true, false],
-            'array_type' => [new TestType(), new TestType(), new TestType()],
+            [
+                ['null' => null],
+            ],
+            [
+                ['string' => 'string'],
+            ],
+            [
+                ['float' => 3.14],
+            ],
+            [
+                ['integer' => 5],
+            ],
+            [
+                ['boolean' => true],
+            ],
+            [
+                ['type' => new TestType()],
+            ],
+            [
+                ['array' => ['string', 3.14, 5, true, new TestType()]],
+            ],
+            [
+                ['array_array' => ['array' => ['string', 3.14, 5, true, new TestType()]]],
+            ],
+            [
+                ['array_null' => [null, null]],
+            ],
+            [
+                ['array_string' => ['this', 'is', 'array', 'of', 'strings']],
+            ],
+            [
+                ['array_float' => [3.14, 2, 71, 9.8]],
+            ],
+            [
+                ['array_integer' => [1, 2, 3, 4, 5]],
+            ],
+            [
+                ['array_boolean' => [true, false, true, false]],
+            ],
+            [
+                ['array_type' => [new TestType(), new TestType(), new TestType()]],
+            ]
         ];
     }
 }

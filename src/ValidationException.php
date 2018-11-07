@@ -15,18 +15,25 @@ class ValidationException extends \TypeError
 
     /**
      * @param string $propertyName
-     * @param string $type
+     * @param string $propertyType
+     * @param string $expectedType
      * @param bool $isArray
      * @param bool $isNullable
      *
      * @return ValidationException
      */
-    public static function createWithValidationError(string $propertyName, string $type, bool $isArray, bool $isNullable)
-    {
-        $type = self::TYPE_MAP[$type] ?? $type;
+    public static function createWithValidationError(
+        string $propertyName,
+        string $propertyType,
+        string $expectedType,
+        bool $isArray,
+        bool $isNullable
+    ) {
+        $expectedType = self::TYPE_MAP[$expectedType] ?? $expectedType;
         $isArrayPrefix = $isArray ? 'array of ' : '';
         $isNullableSuffix = $isNullable ? ' or null' : '';
-        $errorMessage = 'Property "' .$propertyName . '" must be type ' . $isArrayPrefix . $type . $isNullableSuffix;
+        $errorMessage = 'Property "' . $propertyName . '" must be type ' . $isArrayPrefix . $expectedType . $isNullableSuffix;
+        $errorMessage .= '. Type ' . $propertyType . ' given instead';
         return (new self($errorMessage));
     }
 }
