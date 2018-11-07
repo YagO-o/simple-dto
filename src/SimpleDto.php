@@ -33,43 +33,75 @@ class SimpleDto
      */
     public function __construct(array $params = [])
     {
-        $reflection = new \ReflectionClass(static::class);
+        if (DtoPropertyStorage::hasProperties(static::class) === false) {
+            $reflection = new \ReflectionClass(static::class);
+            $this->fulfillDtoPropertyStorage($reflection);
+        }
 
+        $propertyList = DtoPropertyStorage::getPropertyList(static::class);
+
+        foreach ($propertyList as $property) {
+
+            $isIsset = array_key_exists($property->getName(), $params);
+            $defaultValue = $property->getDefaultValue();
+            $propertyValue = $isIsset ? $params[$property->getName()] : $defaultValue;
+
+            $isValid = $this->validate(
+                $property->getType(),
+                $property->getName(),
+                $property->isNullable(),
+                $property->isArray(),
+                $propertyValue
+            );
+
+            if ($isValid) {
+                $property = new \ReflectionProperty(static::class, $property->getName());
+                $property->setAccessible(true);
+                $property->setValue($this, $propertyValue);
+            } else {
+                throw ValidationException::createWithValidationError(
+                    $property->getName(),
+                    \gettype($propertyValue),
+                    $property->getType(),
+                    $property->isArray(),
+                    $property->isNullable()
+                );
+            }
+        }
+    }
+
+    private function fulfillDtoPropertyStorage(\ReflectionClass $reflection): void
+    {
         $defaultPropertyValues = $reflection->getDefaultProperties();
-
         $propertyList = $reflection->getProperties();
 
         foreach ($propertyList as $property) {
             $propertyName = $property->getName();
-
             if (preg_match('/@var\s+([^\s]+)/', $property->getDocComment(), $matches) === 0) {
                 throw AnnotationException::withEmptyPhpDocComment($propertyName);
             }
 
-            list(, $typeListString) = $matches;
-
+            $typeListString = $matches[1];
             $typeList = explode(self::TYPE_DELIMITER, $typeListString);
-            $isNullable = in_array(self::NULLABLE_ATTRIBUTE, $typeList);
-            $isIsset = array_key_exists($property->getName(), $params);
+            $isNullable = \in_array(self::NULLABLE_ATTRIBUTE, $typeList, true);
             $defaultValue = $defaultPropertyValues[$property->getName()];
-            $paramValue = $isIsset ? $params[$property->getName()] : $defaultValue;
 
             $typeWithoutNull = array_diff($typeList, [self::NULLABLE_ATTRIBUTE]);
             $propertyType = reset($typeWithoutNull);
-            $isTypeArray = mb_substr($propertyType, -2) === self::ARRAY_ATTRIBUTE;
-            if ($isTypeArray) {
+            $isArray = mb_substr($propertyType, -2) === self::ARRAY_ATTRIBUTE;
+            if ($isArray) {
                 $propertyType = rtrim($propertyType, self::ARRAY_ATTRIBUTE);
             }
 
-            $isValid = $this->validate($propertyType, $propertyName, $isNullable, $isTypeArray, $paramValue);
-
-            if ($isValid) {
-                $property->setAccessible(true);
-                $property->setValue($this, $paramValue);
-            } else {
-                throw ValidationException::createWithValidationError($propertyName, $propertyType, $isTypeArray,
-                    $isNullable);
-            }
+            DtoPropertyStorage::add(static::class,
+                new DtoProperty(
+                    $propertyType,
+                    $propertyName,
+                    $isNullable,
+                    $isArray,
+                    $defaultValue
+                )
+            );
         }
     }
 
@@ -106,7 +138,7 @@ class SimpleDto
             return true;
         }
 
-        if ($isArray && is_array($paramValue) === false) {
+        if ($isArray && \is_array($paramValue) === false) {
             return false;
         }
 
