@@ -127,7 +127,7 @@ class SimpleDto
         bool $isArray,
         $paramValue
     ): bool {
-        $typeExist = class_exists($propertyType);
+        $typeExist = class_exists($propertyType) || interface_exists($propertyType);
         $validationFunction = self::VALIDATION_FUNCTION_MAP[$propertyType] ?? null;
 
         if ($validationFunction === null && $typeExist === false) {
